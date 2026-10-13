@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="icon" type="image/png" href="icons/icon-192.png"><meta name="theme-color" content="#1a1410"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="PlayerRole">
+<title>PlayerRole</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark;--bg:#1a1410;--card:#2a2019;--line:color-mix(in srgb,var(--gold) 38%,var(--bg));--card2:color-mix(in srgb,var(--card) 70%,#000);--card3:color-mix(in srgb,var(--card) 82%,var(--gold));--gold:#e0b45a;--txt:#f0e6d2;--mut:color-mix(in srgb,var(--txt) 62%,var(--bg));--red:#d8434f;--blue:#5aa0e0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.4 Georgia,'Times New Roman',serif;max-width:560px;margin:auto;padding:10px}
+h2{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin:0 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.head{display:flex;gap:10px;align-items:stretch}
+.head .info{flex:1;min-width:0}
+.head h1{margin:0 0 6px;font-size:22px;color:var(--gold);line-height:1.1}
+.head dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:13px}
+.head dt{color:var(--mut)}.head dd{margin:0}
+.head img{cursor:pointer;width:38%;max-width:170px;aspect-ratio:1/1;align-self:center;object-fit:cover;object-position:center;border-radius:10px;border:2px solid var(--gold)}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stat{background:var(--card2);border-radius:10px;padding:8px 4px}
+.stat b{display:block;font-size:22px}.stat small{color:var(--mut);font-size:11px}
+.shield{position:relative;width:84px;margin:auto}
+.shield span{position:absolute;inset:0 0 10px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:bold}
+.hearts{display:flex;flex-wrap:wrap;gap:3px;justify-content:center}
+.hearts svg{width:26px;height:26px}.shield svg,.boot,.hearts svg{filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+.boot{width:100px;margin:auto;display:block}
+.bar{display:flex;justify-content:space-around;gap:8px;margin-top:8px;text-align:center}
+.bar div{flex:1}
+.sp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;text-align:center}
+.lvl{display:flex;gap:8px;align-items:flex-start;margin:6px 0}
+.lvl .n{flex:none;min-width:62px;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:4px;text-align:center;font-size:12px;color:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{background:var(--card3);border:1px solid var(--line);border-radius:14px;padding:2px 10px;font-size:13px}
+.slots i{display:inline-block;width:11px;height:11px;border:1px solid var(--gold);border-radius:50%;margin-right:3px;background:var(--gold)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:380px){.two{grid-template-columns:1fr}}
+.row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted #4a3a28;font-size:14px}
+.row b{min-width:34px;text-align:right}.row.p{color:var(--gold)}.row.p::before{content:"● ";font-size:10px}
+.bag{position:relative}
+.bag svg{width:74%;max-width:250px;margin:0 auto;display:block;filter:drop-shadow(0 3px 3px rgba(0,0,0,.5))}
+.bagitems{margin-top:-6px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.coins{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:10px;text-align:center}
+.coin{background:var(--card2);border-radius:10px;padding:6px 4px}
+.coin i{display:block;width:26px;height:26px;border-radius:50%;margin:0 auto 2px;background:radial-gradient(circle at 35% 30%,#fff9,var(--c) 60%);border:2px solid color-mix(in srgb,var(--c) 55%,#000)}
+.coin small{color:var(--mut);font-size:11px}
+.coin b{display:inline-block;min-width:34px;font-size:17px}
+.coin button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--card3);color:var(--txt);font-size:16px;line-height:1;padding:0}
+ul.tr{margin:0;padding-left:18px}ul.tr li{margin-bottom:6px}
+.mut{color:var(--mut);font-size:13px}
+.ed{outline:none;border-radius:4px;-webkit-user-select:text;user-select:text}
+.ed:focus{background:var(--card3);box-shadow:0 0 0 1px var(--gold)}
+.ed:empty::before{content:"—";color:var(--mut)}
+.hx{position:absolute;transform:translate(-50%,-50%);text-align:center;line-height:1.15}.hx small{color:var(--mut);font-size:11px}.hx b{font-size:17px;padding:0 4px;min-width:22px;display:inline-block}.hx .md{color:var(--gold);font-size:13px}
+[stroke="#e0b45a"]{stroke:var(--gold)}[fill="#e0b45a"]{fill:var(--gold)}[stroke="#6b4f2a"]{stroke:var(--line)}[fill="rgba(224,180,90,.35)"]{fill:color-mix(in srgb,var(--gold) 35%,transparent)}
+#pbtn{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:46px;height:46px;border-radius:50%;border:2px solid var(--gold);background:var(--card);font-size:22px;z-index:20;padding:0}
+#panel{position:fixed;right:14px;bottom:calc(68px + env(safe-area-inset-bottom,0px));width:min(290px,calc(100vw - 28px));background:var(--card);color:var(--txt);border:1px solid var(--gold);border-radius:12px;padding:12px;z-index:20;font-size:14px}
+#panel[hidden]{display:none}
+#panel label{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
+#panel input[type=color]{width:54px;height:30px;border:1px solid var(--line);border-radius:6px;background:none;padding:0}
+#presets{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+#presets button,#tdef{border:2px solid;border-radius:14px;padding:3px 10px;font:inherit;font-size:12px}
+#tdef{background:var(--card3);color:var(--txt);border-color:var(--line);width:100%;margin-top:6px;border-radius:10px;padding:6px}
+body[data-view="perfil"] .card:not([data-sec="perfil"]){display:none}body[data-view="combate"] .card:not([data-sec="combate"]){display:none}body[data-view="atributos"] .card:not([data-sec="atributos"]){display:none}body[data-view="conjuros"] .card:not([data-sec="conjuros"]){display:none}body[data-view="salvaciones"] .card:not([data-sec="salvaciones"]){display:none}body[data-view="habilidades"] .card:not([data-sec="habilidades"]){display:none}body[data-view="mochila"] .card:not([data-sec="mochila"]){display:none}body[data-view="rasgos"] .card:not([data-sec="rasgos"]){display:none}body[data-view="personalidad"] .card:not([data-sec="personalidad"]){display:none}body:not([data-view="todo"]) .hint{display:none}
+#bar{position:sticky;top:0;z-index:15;display:flex;align-items:center;gap:12px;background:var(--bg);padding:8px 2px;margin:0 0 10px;border-bottom:1px solid var(--line)}
+#bar b{font-size:17px;color:var(--gold);letter-spacing:.04em}
+#hb{background:var(--card);color:var(--gold);border:1px solid var(--line);border-radius:10px;width:44px;height:40px;display:flex;align-items:center;justify-content:center;padding:0}
+#scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:25;display:none}#scrim.open{display:block}
+#drawer{position:fixed;top:0;bottom:0;left:0;width:min(290px,82vw);background:var(--card);border-right:1px solid var(--gold);z-index:30;padding:calc(16px + env(safe-area-inset-top,0px)) 14px 16px;transform:translateX(-102%);transition:transform .2s;overflow-y:auto}
+#drawer.open{transform:none}
+#drawer ul{list-style:none;margin:0;padding:0}
+#drawer button{width:100%;text-align:left;background:none;border:0;border-radius:10px;color:var(--txt);font:inherit;font-size:16px;padding:11px 10px;margin-bottom:2px}
+#drawer button.on{background:var(--card3);color:var(--gold)}
+.ed[data-ph]:empty::before{content:attr(data-ph);color:var(--mut)}
+.addtr{cursor:pointer;color:var(--gold);list-style:none;margin:4px 0 0 -18px;font-size:13px}
+#bk{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:40;display:flex;align-items:center;justify-content:center;padding:14px}#bk[hidden]{display:none}
+.bkc{background:var(--card);border:1px solid var(--gold);border-radius:12px;padding:14px;width:min(420px,100%)}
+#bkt{width:100%;background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;font:12px monospace;padding:6px}
+.bkb{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.bkb button{background:var(--card3);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font:inherit;font-size:13px}
+[data-mod]{display:inline-block;min-width:18px;text-align:center}
+.add{cursor:pointer;color:var(--gold);padding:2px 9px;border:1px dashed var(--line);border-radius:14px;font-size:13px}
+.row .nm{cursor:pointer}
+#reset,#bexp,#bimp{background:var(--card3);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font:inherit;font-size:13px}
+</style></head><body data-view="todo"><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gSteel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9eef7"/><stop offset="1" stop-color="#7d8aa3"/></linearGradient><linearGradient id="gShield" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b7bb0"/><stop offset="1" stop-color="#27385a"/></linearGradient><linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:color-mix(in srgb,var(--gold) 55%,#fff)"/><stop offset="1" style="stop-color:var(--gold)"/></linearGradient><linearGradient id="gBlade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f6f9fd"/><stop offset=".5" stop-color="#b9c4d9"/><stop offset="1" stop-color="#7d8aa3"/></linearGradient><linearGradient id="gLeather" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b8763a"/><stop offset="1" stop-color="#5e3517"/></linearGradient><linearGradient id="gHeart" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6b78"/><stop offset="1" stop-color="#b3202f"/></linearGradient><radialGradient id="gField" cx=".5" cy=".4" r=".75"><stop offset="0" stop-color="#4b6ba6"/><stop offset="1" stop-color="#1b2a48"/></radialGradient><linearGradient id="gPack" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b47a45"/><stop offset="1" stop-color="#5a3519"/></linearGradient><linearGradient id="gPackL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d49a60"/><stop offset="1" stop-color="#7a4a24"/></linearGradient><linearGradient id="gPackD" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#946036"/><stop offset="1" stop-color="#43260f"/></linearGradient><linearGradient id="gCanvas" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e3d3ab"/><stop offset="1" stop-color="#9c8a63"/></linearGradient><radialGradient id="gHeartR" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#ff9aa2"/><stop offset=".5" stop-color="#e03a4b"/><stop offset="1" stop-color="#8f1424"/></radialGradient></defs></svg><header id="bar"><button id="hb" aria-label="Menú"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button><b id="ttl">Todo</b></header><div id="scrim"></div><nav id="drawer"><h2>PlayerRole</h2><ul></ul></nav><div id="app">
+
+<div class="card head" data-sec="perfil">
+ <div class="info">
+  <h1 class="ed" data-ph="Nombre del personaje"></h1>
+  <dl>
+   <dt>Clase</dt><dd class="ed" data-ph="Clase · Nivel"></dd>
+   <dt>Trasfondo</dt><dd class="ed" data-ph="Trasfondo"></dd>
+   <dt>Raza</dt><dd class="ed" data-ph="Raza"></dd>
+   <dt>Alineamiento</dt><dd class="ed" data-ph="Alineamiento"></dd>
+   <dt>Jugador</dt><dd class="ed" data-ph="Tu nombre"></dd>
+  </dl>
+ </div>
+ <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMzYTNmNGQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxYzFmMjciLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9Ijc4IiByPSIzNiIgZmlsbD0iIzZiNzE4MyIvPjxwYXRoIGQ9Ik0yOCAyMDBjMC00NiAzMi03MCA3Mi03MHM3MiAyNCA3MiA3MHoiIGZpbGw9IiM2YjcxODMiLz48dGV4dCB4PSIxMDAiIHk9IjE5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMyIgZmlsbD0iI2Q3ZGJlNiIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPlRvY2EgcGFyYSBhw7FhZGlyIGZvdG88L3RleHQ+PC9zdmc+" alt="Personaje">
+</div>
+
+<p class="mut hint" style="text-align:center;margin:0 0 10px">Toca cualquier valor para editarlo y la foto para cambiarla · se guarda en este dispositivo</p><div class="card" data-sec="combate"><h2>Combate</h2>
+ <div class="bar">
+  <div>
+   <div class="shield"><svg viewBox="0 0 100 115"><path d="M50 2 96 18v40c0 30-21 48-46 57C25 106 4 88 4 58V18z" fill="url(#gSteel)" stroke="#141b29" stroke-width="3"/><path d="M50 9 89 22v36c0 25-17 40-39 47C28 98 11 83 11 58V22z" fill="url(#gField)" stroke="url(#gGold)" stroke-width="3.5"/><path d="M50 9v96M12 44h76" stroke="url(#gGold)" stroke-width="1.6" opacity=".35"/><path d="M50 9 89 22v13Q50 28 11 35V22z" fill="#fff" opacity=".13"/><path d="M50 98C30 90 16 78 16 58" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="4"/><g fill="url(#gSteel)" stroke="#141b29" stroke-width="1"><circle cx="19" cy="25" r="3.2"/><circle cx="81" cy="25" r="3.2"/><circle cx="50" cy="13" r="2.6"/></g></svg><span class="ed">0</span></div>
+   <small class="mut">Clase de armadura</small>
+  </div>
+  <div>
+   <svg class="boot" viewBox="0 0 120 100"><g stroke="url(#gGold)" stroke-width="3.5" stroke-linecap="round" opacity=".85"><path d="M3 60h20"/><path d="M8 72h30"/><path d="M3 84h24"/></g><path d="M45 40Q36 20 12 22Q24 27 27 33Q15 32 6 42Q22 40 28 44Q16 47 10 56Q32 52 45 52Z" fill="#f6f1e4" stroke="url(#gGold)" stroke-width="2" stroke-linejoin="round"/><path d="M14 23Q26 30 34 38M9 42Q24 44 36 46" stroke="#cdbf9f" stroke-width="1.2" fill="none"/><path d="M46 8Q46 5 49 5H82Q86 5 86 9V50Q86 58 95 61L108 65Q117 68 117 78V84H48Q44 84 44 80V12Q44 8 46 8Z" fill="url(#gLeather)" stroke="#2b1a0d" stroke-width="2.5" stroke-linejoin="round"/><path d="M48 18H84V48Q84 54 90 57L74 54H48Z" fill="#fff" opacity=".1"/><path d="M92 62 106 66Q114 69 114 78V84H84V70Q84 64 92 62Z" fill="#000" opacity=".18"/><rect x="44" y="5" width="42" height="13" rx="3" fill="url(#gGold)" stroke="#2b1a0d" stroke-width="2"/><path d="M50 11.5h30" stroke="#6b4a1a" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M60 24l18 7M78 24 60 31M60 33l18 7M78 33 60 40" stroke="#f6f1e4" stroke-width="2" stroke-linecap="round"/><g fill="url(#gGold)" stroke="#2b1a0d" stroke-width="1"><circle cx="58" cy="28" r="2.4"/><circle cx="80" cy="28" r="2.4"/><circle cx="58" cy="37" r="2.4"/><circle cx="80" cy="37" r="2.4"/></g><rect x="58" y="49" width="24" height="8" rx="2" fill="url(#gGold)" stroke="#2b1a0d" stroke-width="1.5"/><rect x="68" y="51" width="4" height="4" rx="1" fill="#2b1a0d"/><path d="M48 76H112" stroke="#f3d9a8" stroke-width="1.4" stroke-dasharray="3 3" opacity=".7"/><path d="M44 80H118V88Q118 92 114 92H48Q44 92 44 88Z" fill="#2b1a0d"/><path d="M44 88H118" stroke="#6b4a1a" stroke-width="1.5"/></svg>
+   <b class="ed" style="font-size:22px">0 pies</b><br><small class="mut">Velocidad</small>
+  </div>
+  <div>
+   <b class="ed" style="font-size:26px;display:block;margin-top:14px">+0</b><small class="mut">Iniciativa</small>
+   <b class="ed" style="font-size:20px;display:block;margin-top:10px">+0</b><small class="mut">Competencia</small>
+  </div>
+ </div>
+ <h2 style="margin-top:14px">Puntos de golpe · <span class="ed" id="hpmax">0</span></h2>
+ <div class="hearts" id="hearts"></div>
+ <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px"><svg viewBox="0 0 120 100" style="width:108px"><path d="M4 88Q0 34 54 4Q18 40 24 94Z" fill="url(#gGold)" opacity=".8"/><path d="M18 92Q16 52 62 20Q32 50 34 98Z" fill="url(#gGold)" opacity=".45"/><g fill="#fff" opacity=".9"><path d="M96 14l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M14 18l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z"/></g><g transform="translate(-4 5) rotate(45 74 45)"><path d="M74 -8 66 8V62H74Z" fill="#e6ecf6"/><path d="M74 -8 82 8V62H74Z" fill="#9fb0cc"/><path d="M74 -8 82 8V62H66V8Z" fill="none" stroke="#4d618a" stroke-width="1.8" stroke-linejoin="round"/><path d="M74 6V56" stroke="#6f84a8" stroke-width="2.4" stroke-linecap="round"/><path d="M70 10V58" stroke="#fff" stroke-width="1" opacity=".8"/><path d="M50 62Q54 53 74 58Q94 53 98 62Q94 73 74 68Q54 73 50 62Z" fill="url(#gGold)" stroke="#5c3d12" stroke-width="1.6"/><circle cx="74" cy="63" r="3.6" fill="#d8434f" stroke="#5c3d12" stroke-width="1.2"/><circle cx="73" cy="62" r="1.1" fill="#fff" opacity=".8"/><rect x="69.5" y="68" width="9" height="19" rx="2.5" fill="#6b3f1e" stroke="#2b1a0d" stroke-width="1.3"/><path d="M69 72l10 3M69 77l10 3M69 82l10 3" stroke="#d9b27a" stroke-width="1.3"/><circle cx="74" cy="92" r="5.5" fill="url(#gGold)" stroke="#5c3d12" stroke-width="1.5"/><circle cx="74" cy="92" r="2.2" fill="#5aa0e0"/></g></svg><div><small class="mut">Dados de golpe</small><br><b class="ed" style="font-size:24px"></b></div><div><small class="mut">Percepción pasiva</small><br><b class="ed" style="font-size:24px"></b></div></div>
+ <div class="two" style="margin-top:10px">
+  <div class="stat"><b class="ed" data-ph="+0 · dado"></b><small class="ed" data-ph="Arma / ataque"></small></div>
+  <div class="stat"><b class="ed" data-ph="+0 · dado"></b><small class="ed" data-ph="Arma / ataque"></small></div>
+ </div>
+</div>
+
+<div class="card" data-sec="atributos"><h2>Atributos</h2><div id="hexwrap" style="position:relative"><div id="radar"></div><div class="hx" style="left:50%;top:10.6%"><small>Fuerza</small><br><b class="ed" data-attr>10</b> <span class="md">(<span class="ed" data-mod></span>)</span></div><div class="hx" style="left:84.1%;top:30.3%"><small>Destreza</small><br><b class="ed" data-attr>10</b> <span class="md">(<span class="ed" data-mod></span>)</span></div><div class="hx" style="left:84.1%;top:69.7%"><small>Constitución</small><br><b class="ed" data-attr>10</b> <span class="md">(<span class="ed" data-mod></span>)</span></div><div class="hx" style="left:50%;top:89.4%"><small>Inteligencia</small><br><b class="ed" data-attr>10</b> <span class="md">(<span class="ed" data-mod></span>)</span></div><div class="hx" style="left:15.9%;top:69.7%"><small>Sabiduría</small><br><b class="ed" data-attr>10</b> <span class="md">(<span class="ed" data-mod></span>)</span></div><div class="hx" style="left:15.9%;top:30.3%"><small>Carisma</small><br><b class="ed" data-attr>10</b> <span class="md">(<span class="ed" data-mod></span>)</span></div></div></div>
+
+<div class="card" data-sec="conjuros"><h2>Conjuros · Carisma</h2>
+ <div class="sp">
+  <div class="stat"><b class="ed">+0</b><small>Aptitud mágica</small></div>
+  <div class="stat"><b class="ed">0</b><small>CD de salvación</small></div>
+  <div class="stat"><b class="ed">+0</b><small>Ataque de conjuros</small></div>
+ </div>
+ <div class="lvl"><div class="n">Trucos</div><div class="chips"><span class="add">＋</span></div></div><div class="lvl"><div class="n">Nivel 1<div style="margin-top:3px"><span class="slots"></span><b class="ed" data-slots style="margin-left:3px">0</b></div></div><div class="chips"><span class="add">＋</span></div></div><div class="lvl"><div class="n">Nivel 2<div style="margin-top:3px"><span class="slots"></span><b class="ed" data-slots style="margin-left:3px">0</b></div></div><div class="chips"><span class="add">＋</span></div></div><div class="lvl"><div class="n">Nivel 3<div style="margin-top:3px"><span class="slots"></span><b class="ed" data-slots style="margin-left:3px">0</b></div></div><div class="chips"><span class="add">＋</span></div></div><div class="lvl"><div class="n">Nivel 4<div style="margin-top:3px"><span class="slots"></span><b class="ed" data-slots style="margin-left:3px">0</b></div></div><div class="chips"><span class="add">＋</span></div></div><div class="lvl"><div class="n">Nivel 5<div style="margin-top:3px"><span class="slots"></span><b class="ed" data-slots style="margin-left:3px">0</b></div></div><div class="chips"><span class="add">＋</span></div></div><div class="lvl"><div class="n">Nivel 6<div style="margin-top:3px"><span class="slots"></span><b class="ed" data-slots style="margin-left:3px">0</b></div></div><div class="chips"><span class="add">＋</span></div></div><div class="lvl"><div class="n">Nivel 7<div style="margin-top:3px"><span class="slots"></span><b class="ed" data-slots style="margin-left:3px">0</b></div></div><div class="chips"><span class="add">＋</span></div></div><div class="lvl"><div class="n">Nivel 8<div style="margin-top:3px"><span class="slots"></span><b class="ed" data-slots style="margin-left:3px">0</b></div></div><div class="chips"><span class="add">＋</span></div></div><div class="lvl"><div class="n">Nivel 9<div style="margin-top:3px"><span class="slots"></span><b class="ed" data-slots style="margin-left:3px">0</b></div></div><div class="chips"><span class="add">＋</span></div></div></div>
+
+<div class="card" data-sec="salvaciones"><h2>Tiradas de salvación</h2><div id="saves"></div></div>
+<div class="card" data-sec="habilidades"><h2>Habilidades</h2><p class="mut" style="margin:0 0 6px">Toca el nombre para marcar o quitar competencia.</p><div id="skills"></div></div>
+
+<div class="card bag" data-sec="mochila"><h2>Mochila</h2>
+ <svg viewBox="0 0 200 160"><path d="M80 38c0-16 40-16 40 0" fill="none" stroke="#3a2412" stroke-width="9" stroke-linecap="round"/><path d="M80 38c0-14 40-14 40 0" fill="none" stroke="url(#gPackL)" stroke-width="5" stroke-linecap="round"/><path d="M30 94c-9 0-14 7-14 15v20c0 7 5 11 12 11h16V94z" fill="url(#gPackD)" stroke="#2b1a0d" stroke-width="2.5" stroke-linejoin="round"/><path d="M170 94c9 0 14 7 14 15v20c0 7-5 11-12 11h-16V94z" fill="url(#gPackD)" stroke="#2b1a0d" stroke-width="2.5" stroke-linejoin="round"/><path d="M42 66c0-24 26-34 58-34s58 10 58 34v68c0 8-6 14-14 14H56c-8 0-14-6-14-14z" fill="url(#gPack)" stroke="#2b1a0d" stroke-width="3" stroke-linejoin="round"/><path d="M42 66c0-24 26-34 58-34s58 10 58 34c0 15-24 26-58 26S42 81 42 66z" fill="url(#gPackL)" stroke="#2b1a0d" stroke-width="3"/><path d="M50 68c6 12 28 18 50 18s44-6 50-18" fill="none" stroke="#f3d9a8" stroke-width="1.6" stroke-dasharray="4 4" opacity=".8"/><rect x="92" y="74" width="16" height="32" rx="3" fill="#3a2412" stroke="#1d1209" stroke-width="1.5"/><rect x="90" y="92" width="20" height="13" rx="3" fill="url(#gGold)" stroke="#5c3d12" stroke-width="1.6"/><rect x="97" y="96" width="6" height="5" rx="1" fill="#3a2412"/><path d="M58 108h84v26c0 6-5 10-10 10H68c-5 0-10-4-10-10z" fill="url(#gPackD)" stroke="#2b1a0d" stroke-width="2.2"/><path d="M62 112h76" stroke="#f3d9a8" stroke-width="1.4" stroke-dasharray="3 3" opacity=".7"/><circle cx="100" cy="124" r="4.5" fill="url(#gGold)" stroke="#5c3d12" stroke-width="1.5"/><path d="M52 52Q70 40 96 40" stroke="#fff" stroke-opacity=".22" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="44" y="140" width="112" height="16" rx="8" fill="url(#gCanvas)" stroke="#2b1a0d" stroke-width="2.5"/><path d="M60 141v14M140 141v14" stroke="#5a3519" stroke-width="4"/><circle cx="150" cy="148" r="5" fill="none" stroke="#7a6a48" stroke-width="1.4"/></svg>
+ <div class="bagitems" id="bag"></div>
+ <div class="coins"><div class="coin" data-c="pc"><i style="--c:#c87533"></i><small>Cobre (pc)</small><div><button class="cm" aria-label="Quitar">−</button><b class="ed">0</b><button class="cp" aria-label="Agregar">+</button></div></div><div class="coin" data-c="pp"><i style="--c:#cfd5dd"></i><small>Plata (pp)</small><div><button class="cm" aria-label="Quitar">−</button><b class="ed">0</b><button class="cp" aria-label="Agregar">+</button></div></div><div class="coin" data-c="po"><i style="--c:#f0c040"></i><small>Oro (po)</small><div><button class="cm" aria-label="Quitar">−</button><b class="ed">0</b><button class="cp" aria-label="Agregar">+</button></div></div><div class="coin" data-c="ppt"><i style="--c:#b9e4ea"></i><small>Platino (ppt)</small><div><button class="cm" aria-label="Quitar">−</button><b class="ed">0</b><button class="cp" aria-label="Agregar">+</button></div></div></div>
+</div>
+
+<div class="card" data-sec="rasgos"><h2>Rasgos y atributos</h2>
+ <ul class="tr"><li class="addtr">＋ Agregar rasgo</li></ul>
+ <p class="mut" style="margin:10px 0 4px"><b>Idiomas:</b> <span class="ed" data-ph="Añade idiomas"></span></p>
+ <p class="mut" style="margin:0"><b>Competencias:</b> <span class="ed" data-ph="Añade competencias"></span></p>
+</div>
+
+<div class="card" data-sec="personalidad"><h2>Personalidad</h2>
+ <p class="mut" style="margin:0 0 6px"><b>Rasgo:</b> <span class="ed" data-ph="Rasgo de personalidad"></span></p>
+ <p class="mut" style="margin:0 0 6px"><b>Ideal:</b> <span class="ed" data-ph="Ideal"></span></p>
+ <p class="mut" style="margin:0 0 6px"><b>Vínculo:</b> <span class="ed" data-ph="Vínculo"></span></p>
+ <p class="mut" style="margin:0"><b>Defecto:</b> <span class="ed" data-ph="Defecto"></span></p>
+</div>
+
+</div><button id="pbtn" aria-label="Cambiar colores">🎨</button><div id="panel" hidden><b>Color de la página</b><div id="presets"></div><label>Acento<input type="color" data-v="gold"></label><label>Fondo<input type="color" data-v="bg"></label><label>Tarjetas<input type="color" data-v="card"></label><label>Texto<input type="color" data-v="txt"></label><button id="tdef">Colores originales</button></div><input type="file" id="photoin" accept="image/*" hidden><p style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center"><button id="bexp">💾 Guardar copia</button><button id="bimp">📂 Cargar copia</button><button id="reset">Restablecer valores</button></p><div id="bk" hidden><div class="bkc"><b>Copia de seguridad</b><p class="mut" id="bkmsg"></p><textarea id="bkt" rows="6"></textarea><div class="bkb"><button id="bkcopy">Copiar</button><button id="bkload">Cargar texto</button><button id="bkfile">Elegir archivo</button><button id="bkclose">Cerrar</button></div></div></div><input type="file" id="impin" accept=".json,application/json" hidden><script>
+(function(){const DB="playerrole-db",ST="kv";
+function open(){return new Promise((res,rej)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore(ST);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+window.idbReady=(async()=>{try{const db=await open();
+const all=await new Promise(res=>{const o={},q=db.transaction(ST).objectStore(ST).openCursor();q.onsuccess=()=>{const c=q.result;if(c){o[c.key]=c.value;c.continue()}else res(o)};q.onerror=()=>res(o)});
+for(const k in all){if(localStorage.getItem(k)==null)localStorage.setItem(k,all[k])}
+const sI=Storage.prototype.setItem,rI=Storage.prototype.removeItem;
+Storage.prototype.setItem=function(k,v){sI.call(this,k,v);if(this===localStorage&&String(k).startsWith("playerrole")){try{db.transaction(ST,"readwrite").objectStore(ST).put(String(v),k)}catch(e){}}};
+Storage.prototype.removeItem=function(k){rI.call(this,k);if(this===localStorage&&String(k).startsWith("playerrole")){try{db.transaction(ST,"readwrite").objectStore(ST).delete(k)}catch(e){}}};
+if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}})()})();
+</script>
+<script>idbReady.then(()=>{
+const A=[["Fuerza",10],["Destreza",10],["Constitución",10],["Inteligencia",10],["Sabiduría",10],["Carisma",10]];
+const m=v=>Math.floor((v-10)/2),sg=n=>(n>=0?"+":"")+n;
+// hexágono
+function drawRadar(){const A=readA();const c=150,R=100,max=Math.max(20,...A.map(a=>a[1])),pts=[],lab=[];
+let g="";
+[.25,.5,.75,1].forEach(k=>{g+=`<polygon points="${A.map((_,i)=>{const a=-Math.PI/2+i*Math.PI/3;return(c+R*k*Math.cos(a)).toFixed(1)+","+(c+R*k*Math.sin(a)).toFixed(1)}).join(" ")}" fill="none" stroke="#6b4f2a" stroke-width="1" opacity=".7"/>`});
+A.forEach(([n,v],i)=>{const a=-Math.PI/2+i*Math.PI/3,cs=Math.cos(a),sn=Math.sin(a);
+g+=`<line x1="${c}" y1="${c}" x2="${c+R*cs}" y2="${c+R*sn}" stroke="#6b4f2a" opacity=".6"/>`;
+pts.push((c+R*v/max*cs).toFixed(1)+","+(c+R*v/max*sn).toFixed(1));
+lab.push(`<text x="${c+(R+26)*cs}" y="${c+(R+26)*sn-2}" text-anchor="middle" font-size="11" fill="#b5a58a">${n}</text><text x="${c+(R+26)*cs}" y="${c+(R+26)*sn+14}" text-anchor="middle" font-size="14" font-weight="bold" fill="#f0e6d2">${v} (${sg(m(v))})</text>`)});
+g+=`<polygon points="${pts.join(" ")}" fill="rgba(224,180,90,.35)" stroke="#e0b45a" stroke-width="3" stroke-linejoin="round"/>`;
+pts.forEach(p=>{const[x,y]=p.split(",");g+=`<circle cx="${x}" cy="${y}" r="4" fill="#e0b45a"/>`});
+document.getElementById("radar").innerHTML=`<svg viewBox="-10 -10 320 320" style="width:100%;display:block">${g}</svg>`;document.querySelectorAll("[data-mod]").forEach((s,i)=>{if(!s.dataset.manual)s.textContent=sg(m(A[i][1]))})}
+// corazones
+function drawHearts(){const n=Math.min(60,Math.max(0,parseInt(document.getElementById("hpmax").textContent)||0));document.getElementById("hearts").innerHTML=Array(n).fill('<svg viewBox="0 0 24 24"><path d="M12 21S3 14.5 3 8.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 9 2.5C21 14.5 12 21 12 21z" fill="url(#gHeartR)" stroke="#5e0f1a" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 9.5c.2-2 1.6-3.4 3.5-3.4" stroke="#fff" stroke-opacity=".85" stroke-width="1.7" fill="none" stroke-linecap="round"/><ellipse cx="9.5" cy="9.6" rx="1.3" ry=".8" fill="#fff" opacity=".55"/><path d="M12 20.2C8 17.4 4.6 14 4.1 10.6" stroke="#000" stroke-opacity=".18" stroke-width="1.2" fill="none"/></svg>').join("")}
+// salvaciones y habilidades
+const row=(n,v,p)=>`<div class="row${p?" p":""}"><span class="nm">${n}</span><b class="ed">${sg(v)}</b></div>`;
+document.getElementById("saves").innerHTML=[["Fuerza",0,0],["Destreza",0,0],["Constitución",0,0],["Inteligencia",0,0],["Sabiduría",0,0],["Carisma",0,0]].map(s=>row(...s)).join("");
+document.getElementById("skills").innerHTML=[["Acrobacias (Des)",0,0],["Atletismo (Fue)",0,0],["C. Arcano (Int)",0,0],["Engaño (Car)",0,0],["Historia (Int)",0,0],["Interpretación (Car)",0,0],["Intimidación (Car)",0,0],["Investigación (Int)",0,0],["Juego de manos (Des)",0,0],["Medicina (Sab)",0,0],["Naturaleza (Int)",0,0],["Percepción (Sab)",0,0],["Perspicacia (Sab)",0,0],["Persuasión (Car)",0,0],["Religión (Int)",0,0],["Sigilo (Des)",0,0],["Supervivencia (Sab)",0,0],["T. con animales (Sab)",0,0]].map(s=>row(...s)).join("");
+// mochila
+document.getElementById("bag").innerHTML=[].map(i=>`<span class="chip ed">${i}</span>`).join("")+'<span class="add">＋</span>';
+
+function readA(){const v=[...document.querySelectorAll("[data-attr]")];return A.map((a,i)=>[a[0],parseInt(v[i].textContent)||0])}
+function drawSlots(){document.querySelectorAll("[data-slots]").forEach(b=>{const n=Math.min(12,Math.max(0,parseInt(b.textContent)||0));b.previousElementSibling.innerHTML="<i></i>".repeat(n)})}
+const app=document.getElementById("app"),KEY="playerrole-v3",imgSrc=document.querySelector(".head img").src;
+const COINS0=document.querySelector(".coins").outerHTML;try{const s=localStorage.getItem(KEY);if(s){app.innerHTML=s;document.querySelector(".head img").src=imgSrc}}catch(e){}
+if(!app.querySelector(".coin")){const c=app.querySelector(".coins");if(c){const o=[...c.querySelectorAll("b")].map(b=>b.textContent);c.outerHTML=COINS0;const n=app.querySelectorAll(".coin");if(o[0])n[2].querySelector("b").textContent=o[0];if(o[1])n[1].querySelector("b").textContent=o[1]}}
+app.addEventListener("click",e=>{const bt=e.target.closest(".cm,.cp");if(!bt)return;const b=bt.parentElement.querySelector("b");b.textContent=Math.max(0,(parseInt(b.textContent)||0)+(bt.classList.contains("cp")?1:-1));save()});
+try{const ph=localStorage.getItem("playerrole-photo");document.querySelector(".head img").src=ph||imgSrc}catch(e){document.querySelector(".head img").src=imgSrc}
+app.addEventListener("click",e=>{if(e.target.matches(".head img"))document.getElementById("photoin").click()});
+document.getElementById("photoin").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const S=400,c=document.createElement("canvas");c.width=c.height=S;const k=Math.max(S/im.width,S/im.height),w=im.width*k,h=im.height*k;c.getContext("2d").drawImage(im,(S-w)/2,(S-h)/2,w,h);const u=c.toDataURL("image/jpeg",.85);document.querySelector(".head img").src=u;try{localStorage.setItem("playerrole-photo",u)}catch(err){}};im.src=r.result};r.readAsDataURL(f);e.target.value=""});
+document.querySelectorAll(".hx .md").forEach(s=>{if(!s.querySelector("[data-mod]")){const t=s.textContent.replace(/[()]/g,"").trim();s.innerHTML='(<span class="ed" data-mod>'+t+'</span>)'}});
+function mk(){app.querySelectorAll(".ed").forEach(e=>e.setAttribute("contenteditable","true"))}
+function redraw(){drawRadar();drawHearts();drawSlots()}
+function save(){try{const c=app.cloneNode(true);c.querySelector(".head img").removeAttribute("src");localStorage.setItem(KEY,c.innerHTML)}catch(e){}}
+mk();redraw();
+app.addEventListener("input",e=>{const t=e.target;if(t.matches&&t.matches("[data-attr]")){const i=[...document.querySelectorAll("[data-attr]")].indexOf(t),md=document.querySelectorAll("[data-mod]")[i];if(md)delete md.dataset.manual;drawRadar()}if(t.matches&&t.matches("[data-mod]")){if(t.textContent.trim())t.dataset.manual="1";else{delete t.dataset.manual;drawRadar()}}if(t.id==="hpmax")drawHearts();if(t.matches&&t.matches("[data-slots]"))drawSlots();save()});
+app.addEventListener("click",e=>{const nm=e.target.closest(".nm");if(nm){nm.parentElement.classList.toggle("p");save();return}
+const ad=e.target.closest(".add");if(ad){const c=document.createElement("span");c.className="chip ed";c.setAttribute("contenteditable","true");ad.parentElement.insertBefore(c,ad);c.focus();save()}});
+app.addEventListener("focusout",e=>{const t=e.target;if(t.classList&&t.classList.contains("chip")&&!t.textContent.trim()){t.remove();save()}});
+app.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.closest(".ed")){e.preventDefault();e.target.blur()}});
+app.addEventListener("paste",e=>{if(e.target.closest&&e.target.closest(".ed")){e.preventDefault();document.execCommand("insertText",false,(e.clipboardData||window.clipboardData).getData("text"))}});
+document.getElementById("reset").onclick=()=>{try{localStorage.removeItem(KEY);localStorage.removeItem("playerrole-theme");localStorage.removeItem("playerrole-photo")}catch(e){}location.reload()};
+const TH={gold:"#e0b45a",bg:"#1a1410",card:"#2a2019",txt:"#f0e6d2"};
+const PRE=[["Dorado",TH],["Carmesí",{gold:"#e8636f",bg:"#1a0f12",card:"#2b1a1f",txt:"#f5e6e8"}],["Esmeralda",{gold:"#5fd39a",bg:"#0f1a15",card:"#18291f",txt:"#e4f3ea"}],["Arcano",{gold:"#b48cff",bg:"#14101f",card:"#201a33",txt:"#ece6fa"}],["Océano",{gold:"#5ac8e6",bg:"#0e1820",card:"#162833",txt:"#e3f1f7"}],["Pergamino",{gold:"#8a5a1c",bg:"#efe3c8",card:"#f8f0dc",txt:"#2a1d10"}]];
+let cur={...TH};try{Object.assign(cur,JSON.parse(localStorage.getItem("playerrole-theme")||"{}"))}catch(e){}
+function applyTh(){for(const k in cur)document.documentElement.style.setProperty("--"+k,cur[k]);document.querySelectorAll("#panel input[data-v]").forEach(i=>i.value=cur[i.dataset.v]);try{localStorage.setItem("playerrole-theme",JSON.stringify(cur))}catch(e){}}
+document.getElementById("presets").innerHTML=PRE.map((p,i)=>`<button data-i="${i}" style="background:${p[1].bg};color:${p[1].gold};border-color:${p[1].gold}">${p[0]}</button>`).join("");
+document.getElementById("presets").onclick=e=>{const b=e.target.closest("button");if(b){cur={...PRE[b.dataset.i][1]};applyTh()}};
+document.querySelectorAll("#panel input[data-v]").forEach(i=>i.addEventListener("input",()=>{cur[i.dataset.v]=i.value;applyTh()}));
+document.getElementById("tdef").onclick=()=>{cur={...TH};applyTh()};
+document.getElementById("pbtn").onclick=()=>{const pn=document.getElementById("panel");pn.hidden=!pn.hidden};
+applyTh();
+
+const KEYS=[KEY,"playerrole-photo","playerrole-theme"];
+function clean(h){const d=new DOMParser().parseFromString("<body>"+h+"<script>if("serviceWorker" in navigator)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script></body>","text/html");d.querySelectorAll("script,iframe,object,embed,link,meta,style,form").forEach(n=>n.remove());d.body.querySelectorAll("*").forEach(n=>{[...n.attributes].forEach(at=>{if(/^on/i.test(at.name)||/javascript:/i.test(at.value))n.removeAttribute(at.name)})});return d.body.innerHTML}
+const bk=document.getElementById("bk"),bkt=document.getElementById("bkt"),bkm=document.getElementById("bkmsg");
+function openBk(txt,msg){bkt.value=txt;bkm.textContent=msg;bk.hidden=false}
+function applyBackup(t){try{const o=JSON.parse(t);if(o.app!=="playerrole-sheet")throw 0;if(typeof o[KEY]==="string")localStorage.setItem(KEY,clean(o[KEY]));const ph=o["playerrole-photo"];if(typeof ph==="string"&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(ph))localStorage.setItem("playerrole-photo",ph);const th=o["playerrole-theme"];if(typeof th==="string"){const j=JSON.parse(th);if(["gold","bg","card","txt"].every(k=>/^#[0-9a-f]{6}$/i.test(j[k])))localStorage.setItem("playerrole-theme",JSON.stringify({gold:j.gold,bg:j.bg,card:j.card,txt:j.txt}))}location.reload()}catch(err){bkm.textContent="El texto no es una copia válida."}}
+document.getElementById("bexp").onclick=()=>{save();const o={app:"playerrole-sheet",v:1};KEYS.forEach(k=>{try{const v=localStorage.getItem(k);if(v!=null)o[k]=v}catch(e){}});openBk(JSON.stringify(o),"Copia este texto y guárdalo en tus notas, un mensaje o un correo.");bkt.select()};
+document.getElementById("bimp").onclick=()=>openBk("","Pega aquí la copia guardada o elige el archivo .json.");
+document.getElementById("bkcopy").onclick=()=>{bkt.select();let ok=false;try{ok=document.execCommand("copy")}catch(e){}try{if(navigator.clipboard){navigator.clipboard.writeText(bkt.value);ok=true}}catch(e){}bkm.textContent=ok?"Copiado.":"Mantén pulsado el texto para copiarlo."};
+document.getElementById("bkload").onclick=()=>applyBackup(bkt.value);
+document.getElementById("bkfile").onclick=()=>document.getElementById("impin").click();
+document.getElementById("bkclose").onclick=()=>{bk.hidden=true};
+document.getElementById("impin").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>applyBackup(r.result);r.readAsText(f);e.target.value=""};
+
+const VIEWS=[["todo","📋","Todo"],["perfil","🧍","Perfil"],["combate","⚔️","Combate"],["atributos","🔷","Atributos"],["conjuros","✨","Conjuros"],["salvaciones","🛡️","Salvaciones"],["habilidades","🎯","Habilidades"],["mochila","🎒","Mochila"],["rasgos","📜","Rasgos y atributos"],["personalidad","🎭","Personalidad"]];
+const dr=document.getElementById("drawer"),sc=document.getElementById("scrim"),tt=document.getElementById("ttl");
+dr.querySelector("ul").innerHTML=VIEWS.map(v=>`<li><button data-v="${v[0]}">${v[1]} ${v[2]}</button></li>`).join("");
+function setView(v){if(!VIEWS.some(a=>a[0]===v))v="todo";document.body.dataset.view=v;tt.textContent=VIEWS.find(a=>a[0]===v)[2];dr.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));try{localStorage.setItem("playerrole-view",v)}catch(e){}window.scrollTo(0,0)}
+function tog(o){dr.classList.toggle("open",o);sc.classList.toggle("open",o)}
+document.getElementById("hb").onclick=()=>tog(!dr.classList.contains("open"));
+sc.onclick=()=>tog(false);
+dr.onclick=e=>{const b=e.target.closest("button[data-v]");if(b){setView(b.dataset.v);tog(false)}};
+let v0="todo";try{v0=localStorage.getItem("playerrole-view")||"todo"}catch(e){}
+setView(v0);
+app.addEventListener("click",e=>{const a=e.target.closest(".addtr");if(a){const li=document.createElement("li");li.className="ed";li.setAttribute("contenteditable","true");a.parentElement.insertBefore(li,a);li.focus();save()}});
+app.addEventListener("focusout",e=>{const t=e.target;if(t.tagName==="LI"&&t.classList.contains("ed")&&!t.textContent.trim()){t.remove();save()}});
+});</script>
+<script>if("serviceWorker" in navigator)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script></body></html>
